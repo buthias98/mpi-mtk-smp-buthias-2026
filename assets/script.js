@@ -80,3 +80,36 @@ document.addEventListener('DOMContentLoaded', function(){
     render();
   });
 });
+
+document.addEventListener('DOMContentLoaded', function(){
+  function gcd(a,b){ return b === 0 ? a : gcd(b, a % b); }
+  function fmt(n){ return Number.isInteger(n) ? String(n) : n.toFixed(2); }
+  document.querySelectorAll('.explorer').forEach(function(ex){
+    var op = ex.getAttribute('data-op');
+    var news = ['rasional','rasio','aljabar','sudut','sebangun','kongruen','jenisdata','diagram'];
+    if(news.indexOf(op) === -1) return;
+    var out = ex.querySelector('.explorer-output');
+    var inputs = ex.querySelectorAll('input, select');
+    function render(){
+      var vals = []; var rangeIdx = 0;
+      inputs.forEach(function(el){
+        var s = ex.querySelector('.val-a'); var s2 = ex.querySelector('.val-b');
+        if(el.type === 'range'){
+          if(rangeIdx === 0 && s) s.textContent = el.value;
+          if(rangeIdx === 1 && s2) s2.textContent = el.value;
+          rangeIdx++; vals.push(Number(el.value));
+        } else if(el.tagName === 'SELECT'){ vals.push(el.value); }
+      });
+      if(op === 'rasional'){ var g = gcd(vals[0], vals[1]); out.textContent = vals[0] + '/' + vals[1] + ' = ' + fmt(vals[0]/vals[1]) + '; bentuk sederhana: ' + (vals[0]/g) + '/' + (vals[1]/g); }
+      else if(op === 'rasio'){ var g2 = gcd(vals[0], vals[1]); out.textContent = 'Rasio ' + vals[0] + ' : ' + vals[1] + ' = ' + (vals[0]/g2) + ' : ' + (vals[1]/g2); }
+      else if(op === 'aljabar'){ out.textContent = '3x + 2 untuk x = ' + vals[0] + ' adalah ' + (3*vals[0] + 2); }
+      else if(op === 'sudut'){ var pel = 180 - vals[0]; var pen = vals[0] < 90 ? ('; penyikunya ' + (90 - vals[0]) + '°') : ' (tidak punya penyiku karena sudah 90° atau lebih)'; out.textContent = 'Pelurusnya ' + pel + '°' + pen; }
+      else if(op === 'sebangun'){ out.textContent = 'Segitiga sebangun: 3 × ' + vals[0] + ' = ' + (3*vals[0]) + ', 4 × ' + vals[0] + ' = ' + (4*vals[0]) + ', 5 × ' + vals[0] + ' = ' + (5*vals[0]); }
+      else if(op === 'kongruen'){ var map = {sss: 'SSS: ketiga sisi yang bersesuaian sama panjang, jadi segitiganya kongruen.', sas: 'SAS: dua sisi dan sudut apitnya sama, jadi segitiganya kongruen.', asa: 'ASA: dua sudut dan sisi apitnya sama, jadi segitiganya kongruen.', ssa: 'SSA: TIDAK cukup untuk menyatakan segitiga kongruen.'}; out.textContent = map[vals[0]] || ''; }
+      else if(op === 'jenisdata'){ var map = {warna: 'Warna favorit: data kualitatif (kategori).', tinggi: 'Tinggi badan: data kuantitatif (hasil pengukuran).', jumlah: 'Jumlah saudara: data kuantitatif (hasil perhitungan).', hobi: 'Hobi: data kualitatif (kategori).'}; out.textContent = map[vals[0]] || ''; }
+      else if(op === 'diagram'){ var pct = vals[0]/40*100; out.textContent = vals[0] + ' dari 40 siswa = ' + fmt(pct) + '%; sudut juringnya = ' + fmt(pct*3.6) + '°'; }
+    }
+    inputs.forEach(function(el){ el.addEventListener('input', render); el.addEventListener('change', render); });
+    render();
+  });
+});
