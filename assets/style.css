@@ -62,3 +62,7 @@ th{background:var(--navy);color:#fff}
 .check-btn{min-height:48px;padding:.6rem 1.1rem;border-radius:999px;border:none;background:var(--teal);color:#fff;font-weight:700;cursor:pointer}
 .explorer input[type=range]{width:100%;max-width:420px}
 .explorer select{min-height:48px;padding:.5rem;font-size:1rem}
+
+/* Perbaikan: pembahasan kuis disembunyikan sampai murid menjawab */
+.quiz .meta{display:none}
+.quiz.answered .meta{display:block}

@@ -113,3 +113,17 @@ document.addEventListener('DOMContentLoaded', function(){
     render();
   });
 });
+
+/* Perbaikan pembahasan kuis: sembunyikan dulu, tampilkan setelah menjawab */
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.quiz').forEach(function(q){
+    var pemb = q.querySelector('.meta');
+    if(pemb) pemb.style.display = 'none';
+    q.querySelectorAll('.quiz-btn').forEach(function(b){
+      b.addEventListener('click', function(){
+        q.classList.add('answered');
+        if(pemb) pemb.style.display = 'block';
+      });
+    });
+  });
+});
